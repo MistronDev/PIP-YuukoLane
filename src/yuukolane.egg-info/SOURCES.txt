@@ -1,0 +1,12 @@
+LICENSE
+README.md
+pyproject.toml
+src/yuukolane/__init__.py
+src/yuukolane/cli.py
+src/yuukolane/validador.py
+src/yuukolane/yuukolane_transpiler.py
+src/yuukolane.egg-info/PKG-INFO
+src/yuukolane.egg-info/SOURCES.txt
+src/yuukolane.egg-info/dependency_links.txt
+src/yuukolane.egg-info/entry_points.txt
+src/yuukolane.egg-info/top_level.txt

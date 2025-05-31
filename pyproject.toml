@@ -1,0 +1,23 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "yuukolane"
+version = "0.1.0"
+description = "Transpilador da linguagem YuukoLane para Python"
+authors = [
+  { name = "Yuuko", email = "mistron35@gmail.com" }
+]
+license = { file = "LICENSE" }
+readme = "README.md"
+requires-python = ">=3.8"
+
+[project.scripts]
+yuuko = "yuukolane.cli:main"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]
