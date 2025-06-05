@@ -1,6 +1,9 @@
+# cli.py
 import argparse
 import subprocess
-from yuukolane import validador, yuukolane_transpiler
+from pathlib import Path
+from .yuukolane_transpiler import converter
+from .validador import validar_codigo
 
 def main():
     parser = argparse.ArgumentParser(
@@ -11,28 +14,32 @@ def main():
     parser.add_argument("--debug", action="store_true", help="Mostrar código transpilado antes de executar")
 
     args = parser.parse_args()
-    caminho = args.arquivo
-    saida = caminho.replace(".yl", ".py")
+    caminho = Path(args.arquivo)
+    if not caminho.exists() or not caminho.suffix == ".yl":
+        print(f"[ERRO] Arquivo inválido: {caminho}")
+        return
 
     try:
-        with open(caminho, "r", encoding="utf-8") as f:
-            codigo = f.read()
-
-        validador.validar(codigo)
-        codigo_python = yuukolane_transpiler.transpilar(codigo)
+        codigo_yl = caminho.read_text(encoding="utf-8")
+        codigo_py = converter(codigo_yl)
 
         if args.debug:
             print("📜 Código transpilado:\n")
-            print(codigo_python)
+            print(codigo_py)
             print("\n🔚 Fim da transpilação\n")
 
-        with open(saida, "w", encoding="utf-8") as f:
-            f.write(codigo_python)
+        # Salva o .py correspondente
+        saida = caminho.with_suffix(".py")
+        saida.write_text(codigo_py, encoding="utf-8")
+        print(f"[OK] Transpilação concluída: {saida}")
 
-        print(f"✅ Arquivo transpilado salvo em: {saida}")
-
+        # Executa o código, se permitido
         if not args.so_transpilar:
-            print(f"🚀 Executando {saida}...\n")
-            subprocess.run(["python", saida])
+            print(f"\n🚀 Executando {saida}:\n")
+            subprocess.run(["python", str(saida)])
+
     except Exception as e:
-        print(f"❌ Erro: {e}")
+        print(f"[ERRO] {e}")
+
+if __name__ == "__main__":
+    main()
