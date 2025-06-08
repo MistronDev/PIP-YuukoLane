@@ -1,11 +1,17 @@
 # yuukolane_transpiler.py
+import os
 import re, json, sys
 from pathlib import Path
-from validador import validar_codigo
+from .validador import validar_codigo
 
-# ── dicionário oficial ──────────────────────────────────────────────────────
-with open("dicionario.json", encoding="utf-8") as f:
+# Caminho absoluto do dicionario.json relativo a este arquivo:
+caminho_atual = os.path.dirname(__file__)
+caminho_dicionario = os.path.join(caminho_atual, "dicionario.json")
+
+with open(caminho_dicionario, encoding="utf-8") as f:
     DIC = json.load(f)
+
+# resto do código continua igual
 
 # ── tokens temporários ──────────────────────────────────────────────────────
 TOKENS_STR, TOKENS_COM = {}, {}
